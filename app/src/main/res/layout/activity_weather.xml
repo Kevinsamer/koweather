@@ -3,6 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
     tools:context="com.koweather.yzc.mykoweather.WeatherActivity">
 
+    <ScrollView
+        android:id="@+id/weather_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:overScrollMode="never">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include layout="@layout/title"/>
+            <include layout="@layout/now"/>
+            <include layout="@layout/forecast"/>
+            <include layout="@layout/aqi"/>
+            <include layout="@layout/suggestion"/>
+        </LinearLayout>
+
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>

@@ -2,6 +2,7 @@ package com.koweather.yzc.mykoweather.fragment;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.koweather.yzc.mykoweather.R;
+import com.koweather.yzc.mykoweather.WeatherActivity;
 import com.koweather.yzc.mykoweather.db.City;
 import com.koweather.yzc.mykoweather.db.County;
 import com.koweather.yzc.mykoweather.db.Province;
@@ -57,7 +59,6 @@ public class ChooseAreaFragment extends Fragment {
     private View view;
     private static String weatherURL = "http://guolin.tech/api/weather?cityid=";
     private static String key = "7a6c0c69b869474da3c3471de2bcf82c";//这条key使用次数1000次/天
-    private int ChangeContent = 0;
 
 
     @Nullable
@@ -89,7 +90,11 @@ public class ChooseAreaFragment extends Fragment {
                 } else if (currentLevel == LEVEL_COUNTY) {
                     //获取天气数据
                     currentCounty = counties.get(position);
-                    getWeatherInfo();
+                    Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                    intent.putExtra("weatherid",currentCounty.getWeatherID());
+                    startActivity(intent);
+                    getActivity().finish();
+                    //getWeatherInfo();
                 }
             }
         });
@@ -136,6 +141,8 @@ public class ChooseAreaFragment extends Fragment {
                     @Override
                     public void run() {
                         closeProgressdialog();
+                        //启动天气界面并将天气数据传过去
+                        //Intent intent = new Intent();
                         Toast.makeText(view.getContext(),responseText,Toast.LENGTH_SHORT).show();
                     }
                 });

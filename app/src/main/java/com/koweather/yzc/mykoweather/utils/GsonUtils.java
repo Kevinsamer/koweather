@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.koweather.yzc.mykoweather.db.City;
 import com.koweather.yzc.mykoweather.db.County;
 import com.koweather.yzc.mykoweather.db.Province;
+import com.koweather.yzc.mykoweather.gson.Weather;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,6 +77,19 @@ public class GsonUtils {
             }
         }
         return false;
+    }
+
+    public static Weather handleWeatherResponse(String response){
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
+            String weatherContent = jsonArray.get(0).toString();
+            Gson gson = new Gson();
+            return gson.fromJson(weatherContent,Weather.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

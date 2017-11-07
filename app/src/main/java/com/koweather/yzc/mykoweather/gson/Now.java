@@ -17,7 +17,10 @@ public class Now {
     public String hum;//相对湿度
     public String pcpn;//降水量
     public String pres;//大气压强
-    public String tmp;//温度
+    /**
+     * 温度
+     */
+    public String tmp;
     public String vis;//能见度，单位公里
     public class Wind{
         public String deg;//风向360角度
