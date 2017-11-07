@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="ko_weather"/>
+    <version value="2"/>
+    <list>
+        <mapping class="com.koweather.yzc.mykoweather.db.City"/>
+        <mapping class="com.koweather.yzc.mykoweather.db.Province"/>
+        <mapping class="com.koweather.yzc.mykoweather.db.County"/>
+    </list>
+
+</litepal>
