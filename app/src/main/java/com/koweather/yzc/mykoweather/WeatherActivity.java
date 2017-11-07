@@ -71,16 +71,6 @@ public class WeatherActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-//        String weatherContent = prefs.getString("weather", null);
-//        if (weatherContent != null) {
-//            //有缓存时直接解析
-//            Weather weather = GsonUtils.handleWeatherResponse(weatherContent);
-//
-//        } else {
-//            //无缓存是去服务器查询天气数据
-//        }
     }
 
     private void getWeatherInfo() {
