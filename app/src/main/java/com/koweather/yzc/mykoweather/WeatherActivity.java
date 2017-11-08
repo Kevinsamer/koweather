@@ -1,9 +1,12 @@
 package com.koweather.yzc.mykoweather;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -24,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.koweather.yzc.mykoweather.fragment.ChooseAreaFragment;
 import com.koweather.yzc.mykoweather.gson.Forecast;
 import com.koweather.yzc.mykoweather.gson.Weather;
+import com.koweather.yzc.mykoweather.services.AutoUpdateService;
 import com.koweather.yzc.mykoweather.utils.GsonUtils;
 import com.koweather.yzc.mykoweather.utils.HttpUtils;
 
@@ -49,6 +53,18 @@ public class WeatherActivity extends AppCompatActivity {
     public String weatherId;
     public SwipeRefreshLayout swipeRefreshLayout;
     public DrawerLayout drawerLayout;
+    private AutoUpdateService.GetWeatherId getWeatherId;
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            getWeatherId = (AutoUpdateService.GetWeatherId) service;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
 
 
 
@@ -104,6 +120,7 @@ public class WeatherActivity extends AppCompatActivity {
             }
         });
         weatherId = getIntent().getStringExtra("weatherid");
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherContent = prefs.getString(weatherId, null);
         //Log.d("read weatherid",weatherId);
@@ -188,6 +205,11 @@ public class WeatherActivity extends AppCompatActivity {
                         }
                     });
 
+                    Intent bindIntent = new Intent(WeatherActivity.this,AutoUpdateService.class);
+                    bindService(bindIntent,connection,BIND_AUTO_CREATE);
+//                    Intent intent = new Intent(WeatherActivity.this,AutoUpdateService.class);
+//                    intent.putExtra("weatherid",weatherId);
+//                    startService(intent);
                 }else {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -207,6 +229,12 @@ public class WeatherActivity extends AppCompatActivity {
             }
         });
         getBingPic();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(connection);
     }
 
     private void setWeatherInfo(Weather weather) {
