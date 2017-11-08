@@ -15,6 +15,14 @@
         android:textColor="#fff"/>
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="更新时间:"
+        android:textColor="#fff"
+        android:layout_toLeftOf="@id/title_update_time"
+        android:layout_marginRight="5dp"
+        android:layout_centerVertical="true"/>
+    <TextView
         android:id="@+id/title_update_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

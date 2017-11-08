@@ -1,6 +1,6 @@
 package com.koweather.yzc.mykoweather.fragment;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.koweather.yzc.mykoweather.MainActivity;
 import com.koweather.yzc.mykoweather.R;
 import com.koweather.yzc.mykoweather.WeatherActivity;
 import com.koweather.yzc.mykoweather.db.City;
@@ -90,10 +91,18 @@ public class ChooseAreaFragment extends Fragment {
                 } else if (currentLevel == LEVEL_COUNTY) {
                     //获取天气数据
                     currentCounty = counties.get(position);
-                    Intent intent = new Intent(getActivity(), WeatherActivity.class);
-                    intent.putExtra("weatherid",currentCounty.getWeatherID());
-                    startActivity(intent);
-                    getActivity().finish();
+                    if (getActivity() instanceof MainActivity) {
+                        Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                        intent.putExtra("weatherid", currentCounty.getWeatherID());
+                        startActivity(intent);
+                        getActivity().finish();
+                    }else if (getActivity() instanceof WeatherActivity){
+                        WeatherActivity weatherActivity = (WeatherActivity) getActivity();
+                        weatherActivity.drawerLayout.closeDrawers();
+                        weatherActivity.swipeRefreshLayout.setRefreshing(true);
+                        weatherActivity.getWeatherInfo(currentCounty.getWeatherID());
+                        weatherActivity.weatherId = currentCounty.getWeatherID();
+                    }
                     //getWeatherInfo();
                 }
             }
@@ -124,7 +133,7 @@ public class ChooseAreaFragment extends Fragment {
                     @Override
                     public void run() {
                         closeProgressdialog();
-                        Snackbar.make(view,"获取天气数据失败",Snackbar.LENGTH_SHORT).setAction("重试", new View.OnClickListener() {
+                        Snackbar.make(view, "获取天气数据失败", Snackbar.LENGTH_SHORT).setAction("重试", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 getWeatherInfo();
@@ -143,7 +152,7 @@ public class ChooseAreaFragment extends Fragment {
                         closeProgressdialog();
                         //启动天气界面并将天气数据传过去
                         //Intent intent = new Intent();
-                        Toast.makeText(view.getContext(),responseText,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), responseText, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
