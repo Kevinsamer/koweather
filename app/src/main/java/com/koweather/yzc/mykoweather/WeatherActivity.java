@@ -14,8 +14,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,7 +22,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.koweather.yzc.mykoweather.fragment.ChooseAreaFragment;
 import com.koweather.yzc.mykoweather.gson.Forecast;
 import com.koweather.yzc.mykoweather.gson.Weather;
 import com.koweather.yzc.mykoweather.services.AutoUpdateService;
@@ -53,11 +50,12 @@ public class WeatherActivity extends AppCompatActivity {
     public String weatherId;
     public SwipeRefreshLayout swipeRefreshLayout;
     public DrawerLayout drawerLayout;
-    private AutoUpdateService.GetWeatherId getWeatherId;
+    private AutoUpdateService.GetWeatherIdBinder weatherIdBinder;
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            getWeatherId = (AutoUpdateService.GetWeatherId) service;
+            weatherIdBinder = (AutoUpdateService.GetWeatherIdBinder) service;
+            weatherIdBinder.getWeatherId(weatherId);
         }
 
         @Override
