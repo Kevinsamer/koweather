@@ -53,4 +53,5 @@ public class City extends DataSupport {
 
     public City() {
     }
+
 }

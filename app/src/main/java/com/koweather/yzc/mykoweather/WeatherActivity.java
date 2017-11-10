@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -46,6 +47,7 @@ public class WeatherActivity extends AppCompatActivity {
     private ImageView chooseAreaImg,weatherBg;
     private static String weatherURL = "http://guolin.tech/api/weather?cityid=";
     private static String key = "7a6c0c69b869474da3c3471de2bcf82c";//这条key使用次数1000次/天
+    //GL's key:bc0418b57b2d4918819d3974ac1285d9----mykey:7a6c0c69b869474da3c3471de2bcf82c
     private static String binPicUrl = "http://guolin.tech/api/bing_pic";
     public String weatherId;
     public SwipeRefreshLayout swipeRefreshLayout;
@@ -184,7 +186,7 @@ public class WeatherActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String responseContent = response.body().string();
-                //Log.d("weatherContent",responseContent);此处已经获取到weather的json数据
+                Log.d("weatherContent",responseContent);//此处已经获取到weather的json数据
                 final Weather weather = GsonUtils.handleWeatherResponse(responseContent);
                 //Log.d("weather","status="+weather.status+"cityName:"+weather.basic.cityName);
 
@@ -232,7 +234,7 @@ public class WeatherActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(connection);
+        //unbindService(connection);
     }
 
     private void setWeatherInfo(Weather weather) {

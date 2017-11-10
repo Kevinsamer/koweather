@@ -60,14 +60,14 @@ public class ChooseAreaFragment extends Fragment {
     private View view;
     private static String weatherURL = "http://guolin.tech/api/weather?cityid=";
     private static String key = "7a6c0c69b869474da3c3471de2bcf82c";//这条key使用次数1000次/天
-
+    private static String placeURL = "http://guolin.tech/api/china/";
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.choose_area, container, false);
         backButton = view.findViewById(R.id.title_back);
-        backButton.setVisibility(View.GONE);
+        //backButton.setVisibility(View.GONE);
         titleTextView = view.findViewById(R.id.title_text);
         listView = view.findViewById(R.id.listview);
         adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, dataList);
@@ -83,20 +83,19 @@ public class ChooseAreaFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (currentLevel == LEVEL_PROVINCE) {
                     currentProvince = provinces.get(position);
-                    Log.d("province", currentProvince.getProviceName());
                     queryCities();
                 } else if (currentLevel == LEVEL_CITY) {
                     currentCity = cities.get(position);
                     queryCounties();
                 } else if (currentLevel == LEVEL_COUNTY) {
-                    //获取天气数据
+                    //跳转到天气显示界面
                     currentCounty = counties.get(position);
                     if (getActivity() instanceof MainActivity) {
                         Intent intent = new Intent(getActivity(), WeatherActivity.class);
                         intent.putExtra("weatherid", currentCounty.getWeatherID());
                         startActivity(intent);
                         getActivity().finish();
-                    }else if (getActivity() instanceof WeatherActivity){
+                    } else if (getActivity() instanceof WeatherActivity) {
                         WeatherActivity weatherActivity = (WeatherActivity) getActivity();
                         weatherActivity.drawerLayout.closeDrawers();
                         weatherActivity.swipeRefreshLayout.setRefreshing(true);
@@ -122,7 +121,7 @@ public class ChooseAreaFragment extends Fragment {
     }
 
     /**
-     * 获取天气数据
+     * 获取天气数据  ps:该方法应在天气界面执行，便于天气界面的下拉刷新实现
      */
     private void getWeatherInfo() {
         showProgressdialog();
@@ -175,7 +174,7 @@ public class ChooseAreaFragment extends Fragment {
             listView.setSelection(0);
             currentLevel = LEVEL_COUNTY;
         } else {
-            String url = "http://guolin.tech/api/china/" + currentProvince.getProvinceCode() + "/" + currentCity.getCityCode();
+            String url = placeURL + currentProvince.getProvinceCode() + "/" + currentCity.getCityCode();
             getDataFromInternet(url, "county");
         }
     }
@@ -197,7 +196,7 @@ public class ChooseAreaFragment extends Fragment {
             listView.setSelection(0);
             currentLevel = LEVEL_CITY;
         } else {
-            String url = "http://guolin.tech/api/china/" + currentProvince.getProvinceCode();
+            String url = placeURL + currentProvince.getProvinceCode();
             getDataFromInternet(url, "city");
         }
     }
@@ -219,8 +218,7 @@ public class ChooseAreaFragment extends Fragment {
             listView.setSelection(0);
             currentLevel = LEVEL_PROVINCE;
         } else {
-            String url = "http://guolin.tech/api/china/";
-            getDataFromInternet(url, "province");
+            getDataFromInternet(placeURL, "province");
         }
 
     }

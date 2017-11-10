@@ -18,7 +18,6 @@ import org.json.JSONObject;
  */
 
 public class GsonUtils {
-    private static Gson gson = new Gson();
 
     public static boolean handleProvinceResponse(String response) {
         if (!TextUtils.isEmpty(response)) {
@@ -79,13 +78,13 @@ public class GsonUtils {
         return false;
     }
 
-    public static Weather handleWeatherResponse(String response){
+    public static Weather handleWeatherResponse(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
             String weatherContent = jsonArray.get(0).toString();
             Gson gson = new Gson();
-            return gson.fromJson(weatherContent,Weather.class);
+            return gson.fromJson(weatherContent, Weather.class);
         } catch (JSONException e) {
             e.printStackTrace();
         }
